@@ -7,12 +7,14 @@
     "license": "MIT",
     "require": {
         "php": "^8.2",
+        "barryvdh/laravel-dompdf": "^3.1",
         "google/auth": "1.47",
         "laravel/cashier": "^15.6",
         "laravel/framework": "^11.31",
         "laravel/sanctum": "^4.0",
         "laravel/tinker": "^2.9",
-        "spatie/laravel-permission": "^6.19"
+        "spatie/laravel-permission": "^6.19",
+        "stripe/stripe-php": "^16.6"
     },
     "require-dev": {
         "fakerphp/faker": "^1.23",

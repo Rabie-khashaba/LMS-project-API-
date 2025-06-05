@@ -4,9 +4,33 @@ namespace App\Http\Controllers\Api\LMS;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
+use Stripe\Charge;
+use Stripe\Stripe;
 
 class SubscriptionController extends Controller
 {
+    public function purchase(Request $request)
+    {
+        $request->validate([
+            'token' => 'required',
+            'amount' => 'required|numeric',
+        ]);
+
+        Stripe::setApiKey(env('STRIPE_SECRET'));
+
+        try {
+            $charge = Charge::create([
+                'amount' => $request->amount * 100, // بالدولار
+                'currency' => 'usd',
+                'source' => $request->token,
+                'description' => 'Purchase Course',
+            ]);
+
+            return response()->json(['message' => 'Payment successful', 'charge' => $charge]);
+        } catch (\Exception $e) {
+            return response()->json(['message' => 'Payment failed', 'error' => $e->getMessage()], 500);
+        }
+    }
     public function subscribe(Request $request)
     {
         //dd($request->payment_method);

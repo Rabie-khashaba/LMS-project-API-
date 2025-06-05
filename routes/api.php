@@ -4,6 +4,8 @@ use App\Http\Controllers\Api\LMS\CourseController;
 use App\Http\Controllers\Api\LMS\LessonController;
 use App\Http\Controllers\Api\LMS\Commentcontroller;
 use App\Http\Controllers\Api\LMS\RatingController;
+use App\Http\Controllers\Api\LMS\SubscriptionController;
+use App\Http\Controllers\Api\LMS\CertificateController;
 use Illuminate\Support\Facades\Route;
 
 
@@ -91,6 +93,25 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::get('deleteRate/{id}' , [RatingController::class, 'destroy']);
 
 });
+
+
+//Subscription
+Route::middleware('auth:sanctum')->group(function () {
+    Route::post('/purchase', [SubscriptionController::class, 'purchase']);
+    Route::get('/subscribe', [SubscriptionController::class, 'show'])->name('subscribe.form');
+    Route::post('/subscribe', [SubscriptionController::class, 'subscribe'])->name('subscribe');
+    Route::get('/status', [SubscriptionController::class, 'status'])->name('status');
+    Route::get('/invoices', [SubscriptionController::class, 'invoices'])->name('invoices');
+
+});
+
+//certificate for complete Course
+Route::middleware('auth:sanctum')->group(function () {
+    Route::get('/certificate/download', [CertificateController::class, 'download']);
+});
+
+
+
 
 
 
