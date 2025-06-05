@@ -3,6 +3,7 @@
 use App\Http\Controllers\Api\LMS\CourseController;
 use App\Http\Controllers\Api\LMS\LessonController;
 use App\Http\Controllers\Api\LMS\Commentcontroller;
+use App\Http\Controllers\Api\LMS\RatingController;
 use Illuminate\Support\Facades\Route;
 
 
@@ -13,7 +14,6 @@ Route::post('login', [\App\Http\Controllers\Api\AuthController::class, 'login'])
 
 
 Route::middleware('auth:sanctum')->group(function () {
-
     Route::post('logout', [\App\Http\Controllers\Api\AuthController::class, 'logout']);
     Route::post('store', [\App\Http\Controllers\Api\PostController::class, 'store']);
     Route::post('posts', [\App\Http\Controllers\Api\PostController::class, 'index']);
@@ -26,17 +26,29 @@ Route::middleware('auth:sanctum')->group(function () {
 
     //send notification by firebase
     Route::post('sendNotification', [\App\Http\Controllers\Api\FirebaseNotificationController::class, 'sendN']);
-
 });
 
 
 //Course
 Route::middleware('auth:sanctum')->group(function () {
-    Route::post('storeCourse' , [CourseController::class, 'store']);
     Route::get('Courses' , [CourseController::class, 'index']);
     Route::get('Course/{id}' , [CourseController::class, 'show']);
     Route::post('updateCourse/{id}' , [CourseController::class, 'update']);
     Route::get('deleteCourse/{id}' , [CourseController::class, 'destroy']);
+
+});
+
+//Course-------> only teacher can add Course
+Route::middleware(['auth:sanctum' , 'role:teacher'])->group(function () {
+    //create course
+    Route::post('storeCourse' , [CourseController::class, 'store']);
+
+    //upload file
+    Route::post('upload' , [\App\Http\Controllers\Api\LMS\MediaController::class, 'uploadFiles']);
+
+    //progress a lesson
+    Route::post('lessonProgress' , [\App\Http\Controllers\Api\LMS\LessonProgressController::class, 'lessonProgress']);
+
 
 });
 
@@ -50,6 +62,15 @@ Route::middleware('auth:sanctum')->group(function () {
 
 });
 
+Route::middleware(['auth:sanctum' , 'role:teacher'])->group(function () {
+
+});
+
+
+Route::middleware(['auth:sanctum' , 'role:student'])->group(function () {
+    Route::post('showVideo' , [\App\Http\Controllers\Api\LMS\MediaController::class, 'show']);
+});
+
 
 //comments
 Route::middleware('auth:sanctum')->group(function () {
@@ -60,6 +81,17 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::get('deleteComment/{id}' , [Commentcontroller::class, 'destroy']);
 
 });
+
+//Rating
+Route::middleware('auth:sanctum')->group(function () {
+    Route::post('storeRate' , [RatingController::class, 'store']);
+    Route::get('Rates' , [RatingController::class, 'index']);
+    Route::get('Rate/{id}' , [RatingController::class, 'show']);
+    Route::post('updateRate/{id}' , [RatingController::class, 'update']);
+    Route::get('deleteRate/{id}' , [RatingController::class, 'destroy']);
+
+});
+
 
 
 

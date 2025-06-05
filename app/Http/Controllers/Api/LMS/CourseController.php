@@ -29,6 +29,8 @@ class CourseController extends Controller
                 'description'=>$request->description
             ]);
 
+            $course->users()->attach([$request->user_id]);  // add in pviot table
+
             if(!$course){
                 return response()->json([
                     'success'=>false,

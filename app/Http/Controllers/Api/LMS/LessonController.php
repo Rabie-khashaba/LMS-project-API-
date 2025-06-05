@@ -8,6 +8,7 @@ use App\Http\Resources\LessonResource;
 use App\Models\Lesson;
 use App\TraitApiResource;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Storage;
 
 class LessonController extends Controller
 {
@@ -90,5 +91,7 @@ class LessonController extends Controller
         ]);
 
     }
+
+
 
 }

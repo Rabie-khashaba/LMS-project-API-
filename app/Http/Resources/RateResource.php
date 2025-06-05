@@ -14,6 +14,9 @@ class RateResource extends JsonResource
      */
     public function toArray(Request $request): array
     {
-        return parent::toArray($request);
+        return [
+            'key'=>$this->id,
+            'value'=>$this->value,
+        ];
     }
 }

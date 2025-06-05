@@ -16,6 +16,7 @@ return new class extends Migration
             $table->foreignId('course_id')->constrained()->onDelete('cascade');
             $table->string('title');
             $table->text('content'); // يمكن يكون HTML أو رابط لفيديو
+            $table->string('video_url')->nullable(); // يمكن يكون HTML أو رابط لفيديو
             $table->timestamps();
         });
     }
